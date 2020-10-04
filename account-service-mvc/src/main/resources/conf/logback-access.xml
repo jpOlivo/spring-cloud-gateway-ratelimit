@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!-- appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"> 
+		<encoder class="net.logstash.logback.encoder.LogstashAccessEncoder" / -->
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder
+			class="net.logstash.logback.encoder.AccessEventCompositeJsonEncoder">
+			<providers>
+				<timestamp>
+					<fieldName>timestamp</fieldName>
+					<timeZone>UTC</timeZone>
+				</timestamp>
+				<remoteHost />
+				<remoteUser />
+				<!-- method /> <protocol / -->
+				<requestedUrl />
+				<requestedUri />
+				<statusCode />
+				<contentLength />
+				<elapsedTime />
+				<requestHeaders>
+					<fieldName>request_headers</fieldName>
+					<filter>
+						<requestHeaderFilter>
+							<include>x-naranja-client-id</include>
+							<include>x-naranja-device-id</include>
+							<include>x-naranja-transactionid</include>
+							<include>x-global-transaction-id</include>
+							<include>x-naranja-email</include>
+						</requestHeaderFilter>
+					</filter>
+				</requestHeaders>
+				<responseHeaders>
+					<fieldName>response_headers</fieldName>
+					<filter>
+						<requestHeaderFilter>
+							<include>content-type</include>
+						</requestHeaderFilter>
+					</filter>
+				</responseHeaders>
+
+				<message />
+
+				<pattern>
+					<pattern>
+						<!-- TODO -->
+					</pattern>
+				</pattern>
+			</providers>
+		</encoder>
+	</appender>
+
+	<!-- appender name="STASH"
+		class="net.logstash.logback.appender.LogstashAccessTcpSocketAppender">
+		<destination>127.0.0.1:8089</destination>
+		<encoder
+			class="net.logstash.logback.encoder.AccessEventCompositeJsonEncoder">
+			<providers>
+				<timestamp>
+					<fieldName>timestamp</fieldName>
+					<timeZone>UTC</timeZone>
+				</timestamp>
+				<remoteHost />
+				<remoteUser />
+				<requestedUrl />
+				<requestedUri />
+				<statusCode />
+				<contentLength />
+				<elapsedTime />
+				<requestHeaders>
+					<fieldName>request_headers</fieldName>
+					<filter>
+						<requestHeaderFilter>
+							<include>x-naranja-client-id</include>
+							<include>x-naranja-device-id</include>
+							<include>x-naranja-transactionid</include>
+							<include>x-global-transaction-id</include>
+							<include>x-naranja-email</include>
+						</requestHeaderFilter>
+					</filter>
+				</requestHeaders>
+				<responseHeaders>
+					<fieldName>response_headers</fieldName>
+					<filter>
+						<requestHeaderFilter>
+							<include>content-type</include>
+						</requestHeaderFilter>
+					</filter>
+				</responseHeaders>
+
+				<message />
+
+				<pattern>
+					<pattern>
+					</pattern>
+				</pattern>
+			</providers>
+		</encoder>
+
+	</appender-->
+
+	<appender-ref ref="STDOUT" />
+	<!-- appender-ref ref="STASH" / -->
+
+</configuration>

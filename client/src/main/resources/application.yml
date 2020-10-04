@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: client 
+server:
+  port : 8088
+  
+gateway:
+  baseurl: http://localhost:8080  

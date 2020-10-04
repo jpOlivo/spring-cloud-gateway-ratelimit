@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: gateway-service
+  redis:
+    host: localhost
+    port: 6379
+  cloud:
+    gateway:
+      #metrics.enabled: true    
+      routes:
+      - id: request_rate_limiter
+        uri: https://httpbin.org
+        predicates:
+        - Path=/redis/get/**
+        filters:
+        - StripPrefix=1
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 10
+            redis-rate-limiter.burstCapacity: 5
+      
+      - id: account-service-mvc
+        uri: http://account-service:8091
+        predicates:
+        - Path=/mvc/account/**
+        filters:
+        - StripPrefix=1
+        - name: RequestRateLimiter
+          args:
+            #rate-limiter: "#{@myRateLimiter}"
+            key-resolver: "#{@simpleKeyResolver}"
+            
+            # Rate limits bellow 1 request/s are accomplished by setting:
+            # replenishRate to the wanted number of requests,
+            # requestedTokens to the timespan in seconds and 
+            # burstCapacity to the product of replenishRate and requestedTokens, 
+            #
+            # e.g. setting replenishRate=1, requestedTokens=60 and burstCapacity=60 will result in a limit of 1 request/min.
+            #redis-rate-limiter.replenishRate: 1 
+            #redis-rate-limiter.burstCapacity: 3
+            #redis-rate-limiter.requestedTokens: 3
+            
+            
+            # A steady rate is accomplished by setting the same value in replenishRate and burstCapacity.
+            #redis-rate-limiter.replenishRate: 10 
+            #redis-rate-limiter.burstCapacity: 10
+            #redis-rate-limiter.requestedTokens: 1
+
+            # Temporary bursts can be allowed by setting burstCapacity higher than replenishRate. 
+            # In this case, the rate limiter needs to be allowed some time between bursts (according to replenishRate), 
+            # as two consecutive bursts will result in dropped requests (HTTP 429 - Too Many Requests). 
+            redis-rate-limiter.replenishRate: 5 
+            redis-rate-limiter.burstCapacity: 10
+            redis-rate-limiter.requestedTokens: 1
+
+
+management:
+  endpoints:
+    web.exposure.include: '*'
+
+            

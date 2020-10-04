@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder
+			class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<jsonGeneratorDecorator
+				class="net.logstash.logback.mask.MaskingJsonGeneratorDecorator">
+				<defaultMask>****</defaultMask>
+				<path>account/card/number</path>
+				<path>account/card/cvv</path>
+				<path>account/card/expiration_date</path>
+			</jsonGeneratorDecorator>
+			<providers>
+				<uuid>
+					<fieldName>message_id</fieldName>
+					<strategy>random</strategy>
+				</uuid>
+				<mdc />
+				<context />
+				<timestamp>
+					<fieldName>timestamp</fieldName>
+					<timeZone>UTC</timeZone>
+				</timestamp>
+				<!-- logLevel /> <threadName /> <loggerName /> <message/ -->
+				<pattern>
+					<pattern>
+						{
+						"level": "%level",
+						"thread_name": "%thread",
+						"logger_name":
+						"%logger{39}",
+						"message": "%message"
+						}
+					</pattern>
+				</pattern>
+				<logstashMarkers />
+				<stackTrace />
+				<stackHash />
+				<arguments />
+			</providers>
+		</encoder>
+	</appender>
+
+	<!--  appender name="LOGSTASH"
+		class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+		<destination>127.0.0.1:8089</destination>
+		<encoder
+			class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<jsonGeneratorDecorator
+				class="net.logstash.logback.mask.MaskingJsonGeneratorDecorator">
+				<defaultMask>****</defaultMask>
+				<path>account/card/number</path>
+				<path>account/card/cvv</path>
+				<path>account/card/expiration_date</path>
+			</jsonGeneratorDecorator>
+			<providers>
+				<uuid>
+					<fieldName>message_id</fieldName>
+					<strategy>random</strategy>
+				</uuid>
+				<mdc />
+				<context />
+				<timestamp>
+					<fieldName>timestamp</fieldName>
+					<timeZone>UTC</timeZone>
+				</timestamp>
+				<pattern>
+					<pattern>
+						{
+						"level": "%level",
+						"thread_name": "%thread",
+						"logger_name":
+						"%logger{39}",
+						"message": "%message"
+						}
+					</pattern>
+				</pattern>
+				<logstashMarkers />
+				<stackTrace />
+				<stackHash />
+				<arguments />
+			</providers>
+		</encoder>
+	</appender-->
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<!--  appender-ref ref="LOGSTASH" / -->
+	</root>
+
+</configuration>
